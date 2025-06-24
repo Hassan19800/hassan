@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>حاسبة زيادة المعاش</title>
+  <style>
+    body {
+      direction: rtl;
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      max-width: 400px;
+      margin: auto;
+      background-color: #f8f8f8;
+      font-size: 18px;
+    }
+    h2 {
+      font-size: 28px;
+    }
+    img {
+      max-width: 150px;
+      display: block;
+      margin: 0 auto 5px;
+    }
+    .logo-name {
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    input,
+    select,
+    button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    input[readonly] {
+      background-color: #ddd;
+      color: #555;
+      cursor: not-allowed;
+    }
+    .result {
+      background-color: #e2f0d9;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .result strong {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <img src="Hassan.png" alt="شعار الموقع" />
+  <p class="logo-name">Hassan Abo Elhassan</p>
+
+  <h2>حاسبة زيادة المعاش</h2>
+
+  <label>قيمة المعاش الحالي (جنيه):</label>
+  <input type="number" id="pension" placeholder="مثال: 3000" />
+
+  <label>عدد المنح:</label>
+  <select id="grants">
+    <option value="0">صفر</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+  </select>
+
+  <label>نسبة الزيادة (%):</label>
+  <input type="number" id="rate" value="15" readonly />
+
+  <button onclick="calculate()">احسب</button>
+
+  <div class="result" id="output"></div>
+
+  <script>
+    function calculate() {
+      const pension = parseFloat(document.getElementById("pension").value);
+      const grantsCount = parseInt(document.getElementById("grants").value);
+      const rate = parseFloat(document.getElementById("rate").value); // نقرأ القيمة من الخانة
+
+      if (isNaN(pension)) {
+        document.getElementById("output").innerHTML = "يرجى إدخال قيمة معاش صحيحة.";
+        return;
+      }
+
+      let grantValue = 0;
+      if (grantsCount === 0) grantValue = 10;
+      else if (grantsCount === 1) grantValue = 310;
+      else if (grantsCount === 2) grantValue = 610;
+
+      const baseAmount = pension - grantValue;
+      const increase = baseAmount * rate / 100;
+      const total = pension + increase;
+
+      document.getElementById("output").innerHTML = `
+        قيمة الزيادة: <strong>${increase.toFixed(2)}</strong> جنيه<br>
+        المعاش بعد الزيادة: <strong>${total.toFixed(2)}</strong> جنيه
+      `;
+    }
+  </script>
+</body>
+</html>
